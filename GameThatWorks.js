@@ -22,11 +22,11 @@ function setup() {
     player.stroke = 'yellow';
 
     createCoin();
-    //player.collides(confirm, getPoint);
-    //function getPoint(collider1, collider2) {
-    //    collider2.remove()
-    //    score++;
-    //}
+    player.collides(confirm, getPoint);
+    function getPoint(collider1, collider2) {
+        collider2.remove()
+        score++;
+    }
 
 
 }
@@ -42,7 +42,6 @@ function draw() {
 
     //displayScore();
 
-    createCoin();
 }
 
 function createCoin() {
