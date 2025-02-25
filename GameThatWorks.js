@@ -8,26 +8,45 @@
 // Variables
 /*******************************************************/
 var score = 0;
+var player;
+
 const GAMEHEIGHT = 1850;
 const GAMEWIDTH = 860;
+
 const COINSIZE = 20
+const COIN_TIMEOUT = 2000;
+var coin;
+
 /*******************************************************/
 // setup()
 /*******************************************************/
 function setup() {
 	console.log("setup: ");
+
 	cnv = new Canvas(windowWidth, windowHeight);
 	player = new Sprite(900, 400, 100, 'd');
 	player.color = 'orange';
     player.stroke = 'yellow';
+	player.strokeWeight = '5';
 
     createCoin();
-    player.collides(confirm, getPoint);
-    function getPoint(collider1, collider2) {
-        collider2.remove()
-        score++;
-    }
+    //player.collides(coin, getPoint);
+    //function getPoint(collider1, collider2) {
+    //    collider2.remove();
+    //    score++;
+    //}
 
+	coins = new Group();
+
+	coins.add(createCoin());
+
+	player.collides(coins, getPoint);
+	function getPoint(colliders1, colliders2) {
+		colliders2.remove();
+		score++;
+	}
+
+	let random;
 
 }
 	
@@ -36,24 +55,27 @@ function setup() {
 // draw()
 /*******************************************************/
 function draw() {
-	background('lightgrey');
+	background('grey');
+	if(random(0, 100)<5) {
+		coin.add = (createCoin());
+	}
 
     movePlayer();
-
-    //displayScore();
+    displayScore();
 
 }
+
+
 
 function createCoin() {
     coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE);
-    coin.color = 'black';
-
+    coin.color = 'lightgrey';
 }
 
-//function displayScore() {
-//    text("Score: " + score, 10, 20);
-//    textSize(20);
-//}
+function displayScore() {
+    text("Score: " + score, 10, 20);
+    textSize(20);
+}
 
 function movePlayer() {
     if (kb.pressing('left')) {
