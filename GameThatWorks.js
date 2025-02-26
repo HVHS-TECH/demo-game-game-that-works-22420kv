@@ -9,13 +9,17 @@
 /*******************************************************/
 var score = 0;
 var player;
+const PLAYERSIZE = 20;
+const MOVEMENTSPEED = 5;
 
 const GAMEHEIGHT = 1850;
 const GAMEWIDTH = 860;
 
-const COINSIZE = 20
-const COIN_TIMEOUT = 2000;
+const COINSIZE = 10;
+const COINTIMEOUT = 2000;
 var coin;
+
+var gameState = "play";
 
 /*******************************************************/
 // setup()
@@ -23,14 +27,14 @@ var coin;
 function setup() {
 	console.log("setup: ");
 
-	cnv = new Canvas(windowWidth, windowHeight);
-	player = new Sprite(900, 400, 100, 'd');
+	cnv = new Canvas(GAMEWIDTH, GAMEHEIGHT);
+	player = new Sprite(900, 400, PLAYERSIZE);
 	player.color = 'orange';
     player.stroke = 'yellow';
 	player.strokeWeight = '5';
 
-    createCoin();
-    //player.collides(coin, getPoint);
+    
+    //player.collided(coin, getPoint);
     //function getPoint(collider1, collider2) {
     //    collider2.remove();
     //    score++;
@@ -41,13 +45,10 @@ function setup() {
 	coins.add(createCoin());
 
 	player.collides(coins, getPoint);
-	function getPoint(colliders1, colliders2) {
-		colliders2.remove();
+	function getPoint(collider1, collider2) {
+		collider2.remove();
 		score++;
 	}
-
-	let random;
-
 }
 	
 
@@ -55,21 +56,50 @@ function setup() {
 // draw()
 /*******************************************************/
 function draw() {
-	background('grey');
-	if(random(0, 100)<5) {
-		coin.add = (createCoin());
+	//background('grey');
+
+	if (gameState == "play") {
+		runGame();
+	} else if (gameState == "lose") {
+		loseScreen();
 	}
 
-    movePlayer();
-    displayScore();
+}	
 
+function runGame() {
+	background('grey');
+	if (random(0, 100)<5) {
+		coins.add(createCoin());
+	}
+
+	movePlayer();
+	  for(var i = 0; i < coins.lenght; i++) {
+		if(checkCoinTime(coins[i])) {
+			coins[i].remove();
+			gameState = "lose";
+		}
+	  }
+	  console.log(gameState);
+	displayScore();
 }
 
+function loseScreen() {
+	background('blue');
+}
 
+function checkCountTime(_coin) {
+	if (_coin.spawntime + COINTIMEOUT < millis()) {
+		return(true);
+	} else {
+		return(false);
+	}
+}
 
 function createCoin() {
     coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE);
     coin.color = 'lightgrey';
+	coin.spawntime = millis();
+	  return(coin);
 }
 
 function displayScore() {
@@ -103,7 +133,3 @@ function movePlayer() {
 		player.vel.y = 0;
 	}
 }
-
-/*******************************************************/
-//  END OF APP
-/*******************************************************/
