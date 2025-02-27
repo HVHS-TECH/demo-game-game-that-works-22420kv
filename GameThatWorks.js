@@ -16,7 +16,7 @@ const GAMEHEIGHT = 1850;
 const GAMEWIDTH = 860;
 
 const COINSIZE = 10;
-const COINTIMEOUT = 2000;
+const COIN_TIMEOUT = 2000;
 var coin;
 
 var gameState = "play";
@@ -27,18 +27,11 @@ var gameState = "play";
 function setup() {
 	console.log("setup: ");
 
-	cnv = new Canvas(GAMEWIDTH, GAMEHEIGHT);
+	cnv = new Canvas(windowWidth, windowHeight);
 	player = new Sprite(900, 400, PLAYERSIZE);
 	player.color = 'orange';
     player.stroke = 'yellow';
 	player.strokeWeight = '5';
-
-    
-    //player.collided(coin, getPoint);
-    //function getPoint(collider1, collider2) {
-    //    collider2.remove();
-    //    score++;
-    //}
 
 	coins = new Group();
 
@@ -73,7 +66,7 @@ function runGame() {
 	}
 
 	movePlayer();
-	  for(var i = 0; i < coins.lenght; i++) {
+	  for (var i = 0; i < coins.lenght; i++) {
 		if(checkCoinTime(coins[i])) {
 			coins[i].remove();
 			gameState = "lose";
@@ -85,18 +78,20 @@ function runGame() {
 
 function loseScreen() {
 	background('blue');
+	text("You missed a coin! ", 10,100);
+	textSize(100);
+	text("Score: " + score, 10,200);
 }
 
 function checkCountTime(_coin) {
-	if (_coin.spawntime + COINTIMEOUT < millis()) {
+	if (_coin.spawntime + COIN_TIMEOUT < millis()) {
 		return(true);
-	} else {
-		return(false);
 	}
+		return(false);
 }
 
 function createCoin() {
-    coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE);
+    var coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE);
     coin.color = 'lightgrey';
 	coin.spawntime = millis();
 	  return(coin);
