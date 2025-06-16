@@ -100,7 +100,7 @@ var obstacles;
 /*******************************************************/
 function setup() {
     console.log("setup: ");
-    cnv= new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+    new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
     
     obstacles = new Group();
 

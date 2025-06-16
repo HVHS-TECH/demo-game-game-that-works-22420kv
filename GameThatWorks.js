@@ -28,7 +28,7 @@ var gameState = "play";
 /*******************************************************/
 function setup() {
     console.log("setup: ");
-    new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+    ncv = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
     
     obstacles = new Group();
 
@@ -172,31 +172,4 @@ function createCoin() {
 function displayScore() {
     text("Score: " + score, 10, 20);
     textSize(20);
-}
-
-function movePlayer() {
-    if (kb.pressing('left')) {
-		player.vel.x = -MOVEMENTSPEED;  //Keyboard input D
-	}
-	if (kb.releases('left')) {
-		player.vel.x = 0;
-	}
-	if (kb.pressing('right')) {
-		player.vel.x = MOVEMENTSPEED;  //Keyboard input A
-	}
-	if (kb.releases('right')) {
-		player.vel.x = 0;
-	}
-	if (kb.pressing('up')) {
-		player.vel.y = -MOVEMENTSPEED;  //Keyboard input W
-	}
-	if (kb.releases('up')) {
-		player.vel.y = 0;
-	}
-	if (kb.pressing('w')) {
-		player.vel.y = MOVEMENTSPEED;  //Keyboard input S
-	}
-	if (kb.releases('w')) {
-		player.vel.y = 0;
-	}
 }
