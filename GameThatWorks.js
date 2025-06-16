@@ -21,76 +21,138 @@ var coin;
 
 var gameState = "play";
 
-var cnv;
 
 
 /*******************************************************/
 // setup()
 /*******************************************************/
-function centerCanvas() {
-	var x = (windowWidth - width) / 2;
-	var y =(windowHeight - height) / 2;
-	cnv.position(x, y);
-}
-
 function setup() {
-	console.log("setup: ");
+    console.log("setup: ");
+    new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+    obstacles = new Group();
 
-	cnv = createCanvas(800, 800);
-	centerCanvas();
+    floor =  new Sprite(SCREEN_WIDTH/2,  SCREEN_HEIGHT, SCREEN_WIDTH, 4, 's');
+    floor.color = color("black");
+    world.gravity.y = 80;
+    
+    document.addEventListener("keydown", 
+        function(event) {
+            if(screenSelector == "start"||screenSelector == "end"){
+                screenSelector = "game"
+                resetGame();
+            }else{
+                if(player.y > 184 ){// 184 - found from testing - floor level
+                    console.log("Key pressed!");
+                    player.vel.y = -20;
+                }
+            }
+    });
 
-	player = new Sprite(400, 400, PLAYERSIZE);
-	player.color = 'orange';
-    player.stroke = 'yellow';
-	player.strokeWeight = '5';
+}
+	
 
-	coins = new Group();
+const SCREEN_WIDTH = 800;
+const SCREEN_HEIGHT = 400;
+const PLAYER_HEIGHT = 25;
+const PLAYER_WIDTH = 25;
 
-	coins.add(createCoin());
 
-	player.collides(coins, getPoint);
-	function getPoint(collider1, collider2) {
-		collider2.remove();
-		score++;
-	}
-}	
+const OBSTACLE_HEIGHT = PLAYER_HEIGHT;
+const OBSTACLE_WIDTH = PLAYER_WIDTH;
 
+var spawnDist = 0;
+var nextSpawn = 0;
+var score = 0;
+var player;
+  
+var screenSelector = "start";  
+
+var obstacles;
 /*******************************************************/
 // draw()
 /*******************************************************/
 function draw() {
-	if (gameState == "play") {
-		runGame();
-	} else if (gameState == "lose") {
-		loseScreen();
-	}
-
-}	
-
-function runGame() {
-	background('darkblue');
-	if (random(0, 1000)<20) {
-		coins.add(createCoin());
-	}
-
-	movePlayer();
-	  for (var i = 0; i < coins.length; i++) {
-		if(checkCoinTime(coins[i])) {
-			coins[i].remove();
-			gameState = "lose";
-		}
-	  }
-	  console.log(gameState);
-	displayScore();
+    if(screenSelector=="game"){
+        gameScreen();
+    }else if(screenSelector=="end"){
+        endScreen();
+    }else if(screenSelector=="start"){
+        startScreen();
+    }else{
+        text("wrong screen - you shouldnt get here", 50, 50);
+        console.log("wrong screen - you shouldnt get here")
+    }
 }
 
-function loseScreen() {
-	background('blue');
-	text("You missed a coin! ", 10,100);
-	textSize(100);
-	text("Score: " + score, 10,200);
-	player.remove();
-	coins.remove();
+
+function newObstacle(){
+    obstacle = new Sprite((SCREEN_WIDTH -100),  SCREEN_HEIGHT - OBSTACLE_HEIGHT/2, OBSTACLE_WIDTH, OBSTACLE_HEIGHT, 'k');
+    obstacle.color = color("yellow");
+    obstacle.vel.x = -10;
+    
+    obstacles.add(obstacle);
+}
+
+function youDead(_player, _obstacle){
+    screenSelector = "end";
+    player.remove();
+    obstacles.removeAll();
+}
+
+// Main screen functions
+
+function startScreen(){
+    background("white");
+
+    allSprites.visible = false;
+    textSize(32);
+    fill(255);
+    stroke(0);
+    strokeWeight(4);
+    text("Welcome to the game", 50, 50);
+    textSize(24);
+    text("Press any space to start!", 50, 110);
+	if (kb.presses('space')) {
+		gameScreen();
+	}
+}
+
+function gameScreen(){
+    background("#C39BD3");
+    allSprites.visible = true;
+    score++;
+    if(frameCount> nextSpawn){
+        newObstacle();
+        nextSpawn = frameCount + random(10,100);
+    }
+    textSize(32);
+    fill(255);
+    stroke(0);
+    strokeWeight(4);
+    text(score, 50, 50);
+}
+
+function endScreen(){
+    background("white");
+
+    allSprites.visible = false;
+    textSize(32);
+    fill(255);
+    stroke(0);
+    strokeWeight(4);
+    text("You died! Too bad :-(", 50, 50);
+    textSize(24);
+    text("your score was: "+score, 50, 110);
+    textSize(14);
+    text("press any space to restart!", 50, 150);
+}
+
+function resetGame(){
+    player = new Sprite(PLAYER_WIDTH*1.2,  SCREEN_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT, 'd');
+    player.color = color("purple");
+    player.collides(obstacles, youDead);
+    score = 0;
 }
 
 function checkCoinTime(_coin) {
@@ -131,10 +193,10 @@ function movePlayer() {
 	if (kb.releases('up')) {
 		player.vel.y = 0;
 	}
-	if (kb.pressing('down')) {
+	if (kb.pressing('w')) {
 		player.vel.y = MOVEMENTSPEED;  //Keyboard input S
 	}
-	if (kb.releases('down')) {
+	if (kb.releases('w')) {
 		player.vel.y = 0;
 	}
 }

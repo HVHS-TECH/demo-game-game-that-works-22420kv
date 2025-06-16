@@ -5,6 +5,79 @@
 /*******************************************************/
 console.log("%c t01_create_sprite", "color: blue;");
 
+/*******************************************************/
+// FIREBASE
+/*******************************************************/
+const COL_C = 'white';	    // These two const are part of the coloured 	
+const COL_B = '#CD7F32';	//  console.log for functions scheme
+console.log('%c fb_io.mjs',
+            'color: blue; background-color: white;');
+
+import { initializeApp }
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getDatabase }
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+import { getAuth, GoogleAuthProvider, signInWithPopup }
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+import { ref, set }
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+export { fb_authenticate, fb_write, fb_readRecord};
+
+const FB_GAMECONFIG = {
+        apiKey: "AIzaSyCn36qBrPRutqLXCYIyzkyjMQRiYyhRC2Q",
+        authDomain: "comp-2025-kyla-van-weele.firebaseapp.com",
+        databaseURL: "https://comp-2025-kyla-van-weele-default-rtdb.firebaseio.com",
+        projectId: "comp-2025-kyla-van-weele",
+        storageBucket: "comp-2025-kyla-van-weele.firebasestorage.app",
+        messagingSenderId: "726085363137",
+        appId: "1:726085363137:web:32da18f88b84bf19fffb40",
+        measurementId: "G-RXDD9GFN2H"
+      };
+
+    
+var FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
+var FB_GAMEDB  = getDatabase(FB_GAMEAPP);
+console.log(FB_GAMEDB);
+
+var currentUser = null;
+var userId = null;
+var statusTemplate = "";
+
+
+function status () {
+    console.log('status working..');
+}
+
+/***********************************/
+// fb_authenticate()
+// Called by authenticate Button
+// To firebase - cia signInwIthPopup
+// Input: n/a
+// Return: n/a
+/***********************************/
+function fb_authenticate() {
+    console.log('%c fb_authenticate(): ', 
+        'color: ' + COL_C + '; background-color: deepPink'
+    );
+
+    status();
+    const AUTH = getAuth();
+    const PROVIDER = new GoogleAuthProvider();
+    if (status, fb_authenticate) {
+            console.log('user logged in');
+        } else {
+            console.log('You shouldnt be here');
+            return null;
+        }
+
+/*******************************************************/
+// END OF FIREBASE
+/*******************************************************/
+
+
 const SCREEN_WIDTH = 400;
 const SCREEN_HEIGHT = 200;
 const PLAYER_HEIGHT = 25;
