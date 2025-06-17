@@ -1,7 +1,17 @@
 /*******************************************************/
-// P5.play: GameThatWorks.js
-// Coin collector
-// Written by Kyla
+// FIREBASE                                                       //LOOK AT STARTED FIREBASE WEBSITE
+/*******************************************************/
+window.setup = setup;
+window.draw = draw;
+
+const COL_C = 'white';	    // These two const are part of the coloured 	
+const COL_B = '#CD7F32';	//  console.log for functions scheme
+console.log('%c fb_io.mjs',
+            'color: blue; background-color: white;');
+            
+
+/*******************************************************/
+// END OF FIREBASE
 /*******************************************************/
 	
 /*******************************************************/
@@ -28,7 +38,7 @@ var gameState = "play";
 /*******************************************************/
 function setup() {
     console.log("setup: ");
-    ncv = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+    new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
     
     obstacles = new Group();
 
@@ -69,6 +79,7 @@ var player;
 var screenSelector = "start";  
 
 var obstacles;
+var obstacle;
 /*******************************************************/
 // draw()
 /*******************************************************/
@@ -98,6 +109,7 @@ function youDead(_player, _obstacle){
     screenSelector = "end";
     player.remove();
     obstacles.removeAll();
+    console.log(score);
 }
 
 // Main screen functions
@@ -131,10 +143,13 @@ function gameScreen(){
     stroke(0);
     strokeWeight(4);
     text(score, 50, 50);
+
 }
 
 function endScreen(){
     background("white");
+
+
 
     allSprites.visible = false;
     textSize(32);
