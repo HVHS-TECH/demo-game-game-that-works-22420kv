@@ -88,6 +88,7 @@ function draw() {
         gameScreen();
     }else if(screenSelector=="end"){
         endScreen();
+        fb_write();                         //Work here///
     }else if(screenSelector=="start"){
         startScreen();
     }else{

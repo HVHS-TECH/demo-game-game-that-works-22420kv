@@ -6,7 +6,7 @@ import { getDatabase }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { ref, set }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
- export { fb_authenticate, fb_readRecord};
+ export { fb_authenticate, fb_write, fb_readRecord};
 
 const FB_GAMECONFIG = {
         apiKey: "AIzaSyCn36qBrPRutqLXCYIyzkyjMQRiYyhRC2Q",
@@ -75,12 +75,11 @@ function fb_write() {
     //} else {
     //    console.log("in the right place")
     //} 
+
     var score = document.getElementById("score").value;
-    
-    const dbReference = ref(FB_GAMEDB, 'users/' + userId);
-    set(dbReference, {
-        Score: score
-    }).then(() => {  
+    var data_to_write = {Score: 20}
+    const dbReference = ref(FB_GAMEDB, 'House/People/Score');
+    set(dbReference, data_to_write).then(() => {  
         console.log('successfull write');
         //✅ Code for a successful write goes here
     }).catch((error) => {
