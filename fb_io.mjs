@@ -1,3 +1,8 @@
+const COL_C = 'white';	    // These two const are part of the coloured 	
+const COL_B = '#CD7F32';	//  console.log for functions scheme
+console.log('%c fb_io.mjs',
+            'color: blue; background-color: white;');
+
 import { initializeApp }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase }
@@ -64,7 +69,6 @@ function fb_authenticate() {
 // Return: n/a
 /***********************************/
 function fb_write() {
-    console.log("made it to write");
     console.log('%c fb_write(): ',
         'color: ' + COL_C + '; background-color: hotPink'
     );
@@ -77,9 +81,8 @@ function fb_write() {
     //} 
 
     var score = document.getElementById("score").value;
-    var data_to_write = {Score: 20}
-    const dbReference = ref(FB_GAMEDB, 'House/People/Score');
-    set(dbReference, data_to_write).then(() => {  
+    const dbReference = ref(FB_GAMEDB, 'House/People/');
+    set(dbReference, score).then(() => {  
         console.log('successfull write');
         //✅ Code for a successful write goes here
     }).catch((error) => {

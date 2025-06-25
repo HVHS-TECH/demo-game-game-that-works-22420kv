@@ -1,5 +1,8 @@
 /*******************************************************/
 // FIREBASE                                                       //LOOK AT STARTED FIREBASE WEBSITE
+
+import { fb_write } from "./fb_io.mjs";
+
 /*******************************************************/
 window.setup = setup;
 window.draw = draw;
@@ -80,6 +83,7 @@ var screenSelector = "start";
 
 var obstacles;
 var obstacle;
+ 
 /*******************************************************/
 // draw()
 /*******************************************************/
@@ -88,7 +92,8 @@ function draw() {
         gameScreen();
     }else if(screenSelector=="end"){
         endScreen();
-        fb_write();                         //Work here///
+        fb_write(); 
+        console.log(fb_write);                //Work here///
     }else if(screenSelector=="start"){
         startScreen();
     }else{
@@ -125,7 +130,7 @@ function startScreen(){
     strokeWeight(4);
     text("Welcome to the game", 50, 50);
     textSize(24);
-    text("Press any space to start!", 50, 110);
+    text("Press space to start!", 50, 110);
 	if (kb.presses('space')) {
 		gameScreen();
 	}
@@ -161,7 +166,7 @@ function endScreen(){
     textSize(24);
     text("your score was: "+score, 50, 110);
     textSize(14);
-    text("press any space to restart!", 50, 150);
+    text("press space to restart!", 50, 150);
 }
 
 function resetGame(){
