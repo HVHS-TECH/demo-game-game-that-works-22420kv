@@ -11,7 +11,7 @@ import { getDatabase }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { ref, set }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
- export { fb_authenticate, fb_write, fb_readRecord};
+ export { fb_authenticate, fb_readRecord, fb_writeScore};
 
 const FB_GAMECONFIG = {
         apiKey: "AIzaSyCn36qBrPRutqLXCYIyzkyjMQRiYyhRC2Q",
@@ -61,6 +61,31 @@ function fb_authenticate() {
         }
 }
 
+function fb_writeScore(_score) {
+     console.log('%c fb_writeScore(): ',
+        'color: ' + COL_C + '; background-color: hotPink'
+    );
+
+    const dbReference = ref(FB_GAMEDB, 'Website/gameThatWorksScore');
+    set(dbReference, {
+        Score: _score
+    }).then(() => {  
+        console.log('successfull write');
+        //✅ Code for a successful write goes here
+    }).catch((error) => {
+        console.log(error);
+        //❌ Code for a write error goes here
+    });
+}
+
+//ingame
+//fb_writeScore(55, GameName)
+//
+
+//fiunc fb_writescore(_score,_GameName){
+//    write  _score to the _GameName db 
+//}
+
 /***********************************/
 // fb_writeRecord()
 // Called by write record Button
@@ -68,7 +93,7 @@ function fb_authenticate() {
 // Input: n/a
 // Return: n/a
 /***********************************/
-function fb_write() {
+/*function fb_write() {
     console.log('%c fb_write(): ',
         'color: ' + COL_C + '; background-color: hotPink'
     );
@@ -80,9 +105,9 @@ function fb_write() {
     //    console.log("in the right place")
     //} 
 
-    var score = document.getElementById("score").value;
-    const dbReference = ref(FB_GAMEDB, 'House/People/');
-    set(dbReference, score).then(() => {  
+    const dbReference = ref(FB_GAMEDB, 'Website/gameThatWorksScore/');
+    set(dbReference,
+    ).then(() => {  
         console.log('successfull write');
         //✅ Code for a successful write goes here
     }).catch((error) => {
@@ -91,7 +116,7 @@ function fb_write() {
     });
 
 }
-
+*/
 
 function fb_readRecord() {
     console.log("Didnt make it");
@@ -99,7 +124,7 @@ function fb_readRecord() {
         'color: ' + COL_C + '; background-color: lightPink'
     );
     
-    const dbReference = ref(FB_GAMEDB, 'users/' + userId);
+    const dbReference = ref(FB_GAMEDB, 'Website/gameThatWorksScore/');
     
     return get(dbReference).then((snapshot) => {
         var fb_data = snapshot.val();

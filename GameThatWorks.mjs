@@ -1,7 +1,7 @@
 /*******************************************************/
 // FIREBASE                                                       //LOOK AT STARTED FIREBASE WEBSITE
 
-import { fb_write } from "./fb_io.mjs";
+import { fb_writeScore } from "./fb_io.mjs";
 
 /*******************************************************/
 window.setup = setup;
@@ -24,6 +24,8 @@ var score = 0;
 var player;
 const PLAYERSIZE = 40;
 const MOVEMENTSPEED = 10;
+
+fb_writeScore(score);
 
 //const GAMEHEIGHT = 1850;
 //const GAMEWIDTH = 860;
@@ -78,12 +80,15 @@ var spawnDist = 0;
 var nextSpawn = 0;
 var score = 0;
 var player;
+
   
 var screenSelector = "start";  
 
 var obstacles;
 var obstacle;
  
+
+
 /*******************************************************/
 // draw()
 /*******************************************************/
@@ -91,9 +96,7 @@ function draw() {
     if(screenSelector=="game"){
         gameScreen();
     }else if(screenSelector=="end"){
-        endScreen();
-        fb_write(); 
-        console.log(fb_write);                //Work here///
+        endScreen();   
     }else if(screenSelector=="start"){
         startScreen();
     }else{
@@ -152,10 +155,10 @@ function gameScreen(){
 
 }
 
+
+
 function endScreen(){
     background("white");
-
-
 
     allSprites.visible = false;
     textSize(32);
@@ -176,21 +179,4 @@ function resetGame(){
     score = 0;
 }
 
-function checkCoinTime(_coin) {
-	if (_coin.spawntime + COIN_TIMEOUT < millis()) {
-		return(true);
-	}
-		return(false);
-}
 
-function createCoin() {
-    var coin = new Sprite(random(0, 800), random(0, 800), COINSIZE);
-    coin.color = 'lightgrey';
-	coin.spawntime = millis();
-	  return(coin);
-}
-
-function displayScore() {
-    text("Score: " + score, 10, 20);
-    textSize(20);
-}
