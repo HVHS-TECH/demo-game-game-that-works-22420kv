@@ -66,7 +66,7 @@ function fb_writeScore(_score) {
         'color: ' + COL_C + '; background-color: hotPink'
     );
 
-    const dbReference = ref(FB_GAMEDB, 'Website/gameThatWorksScore');
+    const dbReference = ref(FB_GAMEDB, 'website/gameThatWorksScore');
     set(dbReference, {
         Score: _score
     }).then(() => {  
@@ -124,7 +124,7 @@ function fb_readRecord() {
         'color: ' + COL_C + '; background-color: lightPink'
     );
     
-    const dbReference = ref(FB_GAMEDB, 'Website/gameThatWorksScore/');
+    const dbReference = ref(FB_GAMEDB, 'website/gameThatWorksScore/');
     
     return get(dbReference).then((snapshot) => {
         var fb_data = snapshot.val();

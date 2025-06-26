@@ -25,7 +25,6 @@ var player;
 const PLAYERSIZE = 40;
 const MOVEMENTSPEED = 10;
 
-fb_writeScore(score);
 
 //const GAMEHEIGHT = 1850;
 //const GAMEWIDTH = 860;
@@ -96,7 +95,7 @@ function draw() {
     if(screenSelector=="game"){
         gameScreen();
     }else if(screenSelector=="end"){
-        endScreen();   
+        endScreen();
     }else if(screenSelector=="start"){
         startScreen();
     }else{
@@ -119,6 +118,7 @@ function youDead(_player, _obstacle){
     player.remove();
     obstacles.removeAll();
     console.log(score);
+    fb_writeScore(score);
 }
 
 // Main screen functions
@@ -156,9 +156,9 @@ function gameScreen(){
 }
 
 
-
 function endScreen(){
     background("white");
+
 
     allSprites.visible = false;
     textSize(32);
