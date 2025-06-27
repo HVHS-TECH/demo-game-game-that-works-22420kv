@@ -94,10 +94,10 @@ function fb_writeScore(score) {
             console.warn("User not signed in, cant submit score");
             return;
         }
-        const userId = user.uid;
+        const userId = user.name;
         const name = user.displayName || "Anonymous";
 
-        const dbRef = ref(FB_GAMEDB, `website/scores/${gameName}/${user.uid}`);
+        const dbRef = ref(FB_GAMEDB, `website/scores/${gameName}/${user.name}`);
 
         set(dbRef, {
             name: name,
