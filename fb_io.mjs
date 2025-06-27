@@ -7,11 +7,14 @@ import { initializeApp }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
- import { getAuth, GoogleAuthProvider, signInWithPopup }
+ import { getAuth, onAuthStateChanged }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { ref, set }
  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
- export { fb_authenticate, fb_readRecord, fb_writeScore};
+import { signInWithCustomToken } 
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+export { fb_writeScore};
 
 const FB_GAMECONFIG = {
         apiKey: "AIzaSyCn36qBrPRutqLXCYIyzkyjMQRiYyhRC2Q",
@@ -24,18 +27,33 @@ const FB_GAMECONFIG = {
         measurementId: "G-RXDD9GFN2H"
       };
 
-    
-var FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
-var FB_GAMEDB  = getDatabase(FB_GAMEAPP);
+
+const app = initializeApp(FB_GAMECONFIG);
+const FB_GAMEDB  = getDatabase(app);
+const auth = getAuth(app);
 console.log(FB_GAMEDB);
 
 
-var currentUser = null;
-var userId = null;
+const urlParams = new URLSearchParams(window.location.search);
+const idToken = urlParams.get('token');
 
-
-function status () {
-    console.log('status working..');
+if (idToken) {
+    fetch(`https://hvhs-tech.github.io/12-comp-database-assessment-2025-22420kv/verify-token`, {
+        method:`POST`,
+        body: JSON.stringify({token: idToken}),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const customToken = data.customToken;
+        return signInWithCustomToken(auth, customToken);
+    })
+    .then((userCredential) => {
+        console.log("User logged in via token:", userCredential.user.email);
+    })
+    .catch((error) => {
+        console.error("Login via token failed", error);
+    });
 }
 
 /***********************************/
@@ -45,7 +63,7 @@ function status () {
 // Input: n/a
 // Return: n/a
 /***********************************/
-function fb_authenticate() {
+/*function fb_authenticate() {
     console.log('%c fb_authenticate(): ', 
         'color: ' + COL_C + '; background-color: deepPink'
     );
@@ -61,20 +79,33 @@ function fb_authenticate() {
         }
 }
 
-function fb_writeScore(_score) {
+*/
+
+function fb_writeScore(score) {
      console.log('%c fb_writeScore(): ',
         'color: ' + COL_C + '; background-color: hotPink'
     );
 
-    const dbReference = ref(FB_GAMEDB, 'website/gameThatWorksScore');
-    set(dbReference, {
-        Score: _score
-    }).then(() => {  
-        console.log('successfull write');
-        //✅ Code for a successful write goes here
-    }).catch((error) => {
-        console.log(error);
-        //❌ Code for a write error goes here
+    
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            console.warn("User not signed in, cant submit score");
+            return;
+        }
+        const userId = user.uid;
+        const name = user.displayName || "Anonymous";
+
+        const dbRef = ref(FB_GAMEDB, `website/scores/${gameName}/${userId}`);
+
+        set(dbRef, {
+            name: name,
+            score: score
+        }).then(() => {
+            console.log("Score submitted:", score);
+        }).catch((error) => {
+            console.error("Failed to write score:", error);
+        });;
     });
 }
 
@@ -124,7 +155,6 @@ function fb_readRecord() {
         'color: ' + COL_C + '; background-color: lightPink'
     );
     
-    const dbReference = ref(FB_GAMEDB, 'website/gameThatWorksScore/');
     
     return get(dbReference).then((snapshot) => {
         var fb_data = snapshot.val();

@@ -1,5 +1,5 @@
 /*******************************************************/
-// FIREBASE                                                       //LOOK AT STARTED FIREBASE WEBSITE
+// FIREBASE                                                      
 
 import { fb_writeScore } from "./fb_io.mjs";
 
