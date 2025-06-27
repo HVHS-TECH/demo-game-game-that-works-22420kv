@@ -77,7 +77,6 @@ const OBSTACLE_WIDTH = PLAYER_WIDTH;
 
 var spawnDist = 0;
 var nextSpawn = 0;
-var score = 0;
 var player;
 
   

@@ -32,6 +32,7 @@ const app = initializeApp(FB_GAMECONFIG);
 const FB_GAMEDB  = getDatabase(app);
 const auth = getAuth(app);
 console.log(FB_GAMEDB);
+c
 
 
 const urlParams = new URLSearchParams(window.location.search);
