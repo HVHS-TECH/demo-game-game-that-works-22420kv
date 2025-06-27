@@ -97,7 +97,7 @@ function fb_writeScore(score) {
         const userId = user.uid;
         const name = user.displayName || "Anonymous";
 
-        const dbRef = ref(FB_GAMEDB, `website/scores/gameThatWorks/${userId}`);
+        const dbRef = ref(FB_GAMEDB, `website/scores/${gameName}/${user.uid}`);
 
         set(dbRef, {
             name: name,
