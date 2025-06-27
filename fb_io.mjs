@@ -32,7 +32,7 @@ const app = initializeApp(FB_GAMECONFIG);
 const FB_GAMEDB  = getDatabase(app);
 const auth = getAuth(app);
 console.log(FB_GAMEDB);
-c
+const gameName = "gameThatWorks";
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -97,7 +97,7 @@ function fb_writeScore(score) {
         const userId = user.uid;
         const name = user.displayName || "Anonymous";
 
-        const dbRef = ref(FB_GAMEDB, `website/scores/${gameName}/${userId}`);
+        const dbRef = ref(FB_GAMEDB, `website/scores/gameThatWorks/${userId}`);
 
         set(dbRef, {
             name: name,
